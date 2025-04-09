@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Para mi Amor</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #ff6b6b, #ff8e8e);
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+        }
+
+        .container {
+            text-align: center;
+            background-color: rgba(255, 255, 255, 0.9);
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+            max-width: 600px;
+            width: 90%;
+        }
+
+        h1 {
+            color: #ff4d4d;
+            font-size: 2.5em;
+            margin-bottom: 20px;
+        }
+
+        .tap-container {
+            height: 300px;
+            background: linear-gradient(135deg, #ff8e8e, #ff6b6b);
+            border-radius: 15px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            margin: 20px 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .tap-counter {
+            font-size: 3em;
+            color: white;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+            margin: 20px 0;
+        }
+
+        .tap-message {
+            font-size: 1.5em;
+            color: white;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+            margin: 10px 0;
+        }
+
+        .tap-effect {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background-color: rgba(255, 255, 255, 0.8);
+            border-radius: 50%;
+            pointer-events: none;
+            animation: tapEffect 0.5s ease-out;
+        }
+
+        @keyframes tapEffect {
+            0% {
+                transform: scale(0);
+                opacity: 1;
+            }
+            100% {
+                transform: scale(2);
+                opacity: 0;
+            }
+        }
+
+        .final-message {
+            display: none;
+            margin-top: 20px;
+        }
+
+        .final-message h2 {
+            color: #ff4d4d;
+            font-size: 2em;
+            margin-bottom: 20px;
+        }
+
+        .stickers {
+            font-size: 3em;
+            margin: 20px 0;
+            animation: float 2s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-20px);
+            }
+        }
+
+        .restart-button {
+            background-color: #ff4d4d;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            font-size: 1.2em;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: transform 0.3s, background-color 0.3s;
+            margin-top: 20px;
+            display: none;
+        }
+
+        .restart-button:hover {
+            transform: scale(1.05);
+            background-color: #ff3333;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Para mi Amor ❤️</h1>
+        
+        <div class="tap-container" id="tapContainer">
+            <div class="tap-message">¡Da muchos taps y descubre cuánto te amo!</div>
+            <div class="tap-counter" id="tapCounter">0</div>
+        </div>
+
+        <div class="final-message" id="finalMessage">
+            <h2>¡Te amo!</h2>
+            <div class="stickers">
+                🍄 🦦 ♥️
+            </div>
+        </div>
+
+        <button class="restart-button" id="restartButton">Jugar de nuevo</button>
+    </div>
+
+    <script>
+        const tapContainer = document.getElementById('tapContainer');
+        const tapCounter = document.getElementById('tapCounter');
+        const finalMessage = document.getElementById('finalMessage');
+        const restartButton = document.getElementById('restartButton');
+        
+        let tapCount = 0;
+        const targetTaps = 25;
+
+        function createTapEffect(x, y) {
+            const effect = document.createElement('div');
+            effect.className = 'tap-effect';
+            effect.style.left = x + 'px';
+            effect.style.top = y + 'px';
+            tapContainer.appendChild(effect);
+            
+            setTimeout(() => {
+                effect.remove();
+            }, 500);
+        }
+
+        tapContainer.addEventListener('click', (e) => {
+            const rect = tapContainer.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            
+            createTapEffect(x, y);
+            tapCount++;
+            tapCounter.textContent = tapCount;
+            
+            if (tapCount >= targetTaps) {
+                tapContainer.style.display = 'none';
+                finalMessage.style.display = 'block';
+                restartButton.style.display = 'block';
+            }
+        });
+
+        restartButton.addEventListener('click', () => {
+            tapCount = 0;
+            tapCounter.textContent = '0';
+            tapContainer.style.display = 'flex';
+            finalMessage.style.display = 'none';
+            restartButton.style.display = 'none';
+        });
+    </script>
+</body>
+</html> 
